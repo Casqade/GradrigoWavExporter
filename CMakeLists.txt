@@ -37,4 +37,11 @@ if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
 else()
   target_compile_options(${TARGET} PRIVATE -m64)
   target_link_options(${TARGET} PRIVATE -m64)
+
+  if(NOT ${BUILD_SHARED_LIBS})
+    target_link_libraries(${TARGET} PRIVATE
+      -static
+    )
+  endif()
+
 endif()
