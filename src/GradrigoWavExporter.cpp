@@ -4,6 +4,7 @@
 
 #include <map>
 #include <string>
+#include <cstring>
 #include <sstream>
 #include <iostream>
 #include <functional>
