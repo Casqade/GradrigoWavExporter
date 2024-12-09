@@ -145,7 +145,7 @@ Options:
   -l                    List available boxes
   --list
 
-  -d=FILENAME           Override path to Gradrigo DLL
+  -d=FILENAME           Override path to Gradrigo DLL.
   --dll=FILENAME          Default path is 'gradrigo.dll'
 
   -s=FILENAME           Specify path to Gradrigo script
@@ -154,9 +154,8 @@ Options:
   -sr=NUMBER            Override sample rate.
   --sample-rate=NUMBER    Default sample rate is 44100
 
-  -mem=BYTES            Specify memory limit for samples buffer
+  -mem=BYTES            Specify memory limit for samples buffer.
   --memory-limit=BYTES    Default memory limit is 10 MiB
-
 )help";
 }
 
