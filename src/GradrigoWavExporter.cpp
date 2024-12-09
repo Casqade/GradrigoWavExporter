@@ -132,7 +132,7 @@ printHelp()
 std::cout <<
 R"help(GradrigoWavExporter - exports Gradrigo boxes as .wav files
 
-NOTE: Boxes with infinite loops are NOT available for export!
+NOTE: Parameterized boxes & boxes with infinite loops are NOT available for export!
 
 Usage: GradrigoWavExporter [options] [<boxes>]
 
@@ -413,6 +413,8 @@ main(
     Gradrigo::GetBuffer(1, &buffer);
   }
 
+  std::cout << "\n"; // Gradrigo writes to stdout on itself, but may miss an endline
+
 
   const auto parseResult = Gradrigo::GetResponseString(requestId);
 
@@ -434,9 +436,19 @@ main(
     const auto boxJsonEntry =
       R"prefix({ "Name": ")prefix" + boxName + R"postfix(" })postfix";
 
+    const auto parameterizedBoxJsonEntry =
+      R"prefix({ "Name": ")prefix" + boxName + R"postfix(" , "Parameters": )postfix";
+
     if ( boxList.find(boxJsonEntry) == std::string::npos )
     {
-      std::cerr << "Error: Box '" + boxName + "' not found in script '" + scriptPath + "'\n";
+      if ( boxList.find(parameterizedBoxJsonEntry) == std::string::npos )
+      {
+        std::cerr << "Error: Box '" + boxName + "' not found in script '" + scriptPath + "'\n";
+        continue;
+      }
+
+      std::cerr <<  "Error: Box '" + boxName + "' has parameters. "
+                    "Exporting parameterized boxes is not supported\n";
       continue;
     }
 
@@ -458,8 +470,8 @@ main(
         std::cerr << "Error: Failed to export box '"
                   << boxName << "'. Reached memory limit of "
                   << maxSamples * sampleSize << " bytes. "
-                  << "Make sure the voice is NOT an infinite loop "
-                  << "or increase memory limit\n";
+                  << "Make sure the box does NOT contain an infinite loop "
+                  << "and try increasing memory limit\n";
         printHelpHint();
         return -9;
       }
